@@ -3,6 +3,7 @@ package com.app.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +56,11 @@ public class UtilServiceImpl implements UtilService {
 	 	
 	 	@Override
 	 	public Student updateStudentNameById(@RequestBody StudentRequestDto reqDto) throws NotFoundException {
-	 		List<StudentSubject> studentList= studentSubjectRepository.findAllByStudentStudentID(reqDto.getStudentID());
-	 		if(CollectionUtils.isEmpty(studentList)) {
+	 		StudentSubject ss= studentSubjectRepository.findOneByStudentID(reqDto.getStudentID());
+	 		if(Objects.isNull(ss)) {
 	 			throw new NotFoundException("id - "+ reqDto.getStudentID());
 	 		}
-	 		Student s= studentList.get(0).getStudent();
+	 		Student s= ss.getStudent();
 	 		s.setName(reqDto.getName());
 	 		studentRepository.save(s);
 	 		return s;
@@ -67,11 +68,11 @@ public class UtilServiceImpl implements UtilService {
 	 	
 	 	@Override
 	 	public Class updateClassNameById(@RequestBody ClassRequestDto reqDto) throws NotFoundException {
-	 		List<StudentSubject> ssList= studentSubjectRepository.findAllByClassObjClassID(reqDto.getClassID());
-	 		if(CollectionUtils.isEmpty(ssList)) {
+	 		StudentSubject ss= studentSubjectRepository.findOneByClassID(reqDto.getClassID());
+	 		if(Objects.isNull(ss)) {
 	 			throw new NotFoundException("id - "+ reqDto.getClassID());
 	 		}
-	 		Class c= ssList.get(0).getClassObj();
+	 		Class c= ss.getClassObj();
 	 		c.setClassName(reqDto.getClassName());
 	 		classRepository.save(c);
 	 		return c;
@@ -79,11 +80,11 @@ public class UtilServiceImpl implements UtilService {
 	 	
 	 	@Override
 	 	public Teacher updateTeacherNameById(@RequestBody TeacherRequestDto reqDto) throws NotFoundException {
-	 		List<StudentSubject> ssList= studentSubjectRepository.findAllByTeacherTeacherID(reqDto.getTeacherID());
-	 		if(CollectionUtils.isEmpty(ssList)) {
+	 		StudentSubject ss= studentSubjectRepository.findOneByTeacherID(reqDto.getTeacherID());
+	 		if(Objects.isNull(ss)) {
 	 			throw new NotFoundException("id - "+ reqDto.getTeacherID());
 	 		}
-	 		Teacher t= ssList.get(0).getTeacher();
+	 		Teacher t= ss.getTeacher();
 	 		t.setName(reqDto.getName());
 	 		teacherRepository.save(t);
 	 		return t;
